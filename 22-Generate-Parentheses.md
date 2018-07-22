@@ -51,3 +51,38 @@ class Solution {
 - 空间复杂度: $O(2^{2n}n)$, 假设每个序列都是有效的, 对于找到一个邻近届可见 方法 3
 
 #### 方法 2: 回溯
+##### 直觉和算法
+与方法 1 中每次添加 '(' 或 ')' 不同, 仅在我们知道它仍能保持为有效序列时添加; 我们可以通过回溯我们之前已经追加了的左括号和右括号的总数计算得到  
+如果还有剩余的 (共 n 个) 去替代, 我们可以追加一个左括号; 如果右括号的个数还没有超过左括号的个数, 我们可以追加一个右括号
+```
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> ans = new ArrayList();
+        backtrack(ans, "", 0, 0, n);
+        return ans;
+    }
+
+    public void backtrack(List<String> ans, String cur, int open, int close, int max){
+        if (cur.length() == max * 2) {
+            ans.add(cur);
+            return;
+        }
+
+        if (open < max)
+            backtrack(ans, cur+"(", open+1, close, max);
+        if (close < open)
+            backtrack(ans, cur+")", open, close+1, max);
+    }
+}
+```
+##### 复杂度分析
+我们的复杂度分析是基于理解在 `generateParenthesis(n)` 会生成多少个元素; 这个分析超出了本文的讨论范围, 但是它被证明是第 n 项的卡塔兰数 $\frac {1} {n + 1} (^{2n}_n)$, 它的渐进届是 $\frac {4^n} {n\sqrt{n}}$
+- 时间复杂度: $O(\frac {4^n} {n\sqrt{n}})$, 每个有效的序列在回溯产生时至多需要 n 步
+- 空间复杂度:  $O(\frac {4^n} {n\sqrt{n}})$, 正如上述所说, 使用 $O(n)$ 来存储序列
+
+#### 方法 3: 闭合数
+##### 直觉
+TODO
+
+>**参考:**
+[Generate Parentheses](https://leetcode.com/articles/generate-parentheses/)
